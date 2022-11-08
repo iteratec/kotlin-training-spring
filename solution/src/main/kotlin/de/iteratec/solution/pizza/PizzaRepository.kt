@@ -15,19 +15,22 @@ interface PizzaRepository {
 @ConditionalOnProperty(name = ["pizza.repository.type"], havingValue = "in-memory")
 class InMemoryPizzaRepository : PizzaRepository {
 
-    override fun findAll(): List<Pizza> = listOf(
+    private val pizzaList: List<Pizza> = listOf(
         Pizza(name = "Capricciosa", price = 12),
         Pizza(name = "Calzone", price = 8),
         Pizza(name = "Regina", price = 10),
         Pizza(name = "In-Memoritta", price = 10),
     )
+
+    override fun findAll(): List<Pizza> = pizzaList
 }
 
 @Repository
 @Qualifier("jsonPizzaRepo")
 @ConditionalOnProperty(name = ["pizza.repository.type"], havingValue = "json")
-class JsonPizzaRepository(private val objectMapper: ObjectMapper) : PizzaRepository {
+class JsonPizzaRepository(objectMapper: ObjectMapper) : PizzaRepository {
 
-    override fun findAll(): List<Pizza> =
-        objectMapper.readValue(URL("classpath:/pizza-list.json"))
+    private val pizzaList: List<Pizza> = objectMapper.readValue(URL("classpath:/pizza-list.json"))
+
+    override fun findAll(): List<Pizza> = pizzaList
 }
