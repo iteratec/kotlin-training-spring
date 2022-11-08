@@ -2,6 +2,7 @@ package de.iteratec.solution.pizza
 
 import org.springframework.http.HttpStatus
 import org.springframework.http.MediaType
+import org.springframework.validation.annotation.Validated
 import org.springframework.web.bind.annotation.*
 
 
@@ -16,7 +17,7 @@ class PizzaEndpoint(private val pizzaService: PizzaService) {
     fun getImage(@RequestParam(name = "name") name: String): ByteArray = pizzaService.getImage(name)
 
     @PostMapping
-    fun create(@RequestBody pizza: Pizza) {
+    fun create(@Validated @RequestBody pizza: Pizza) {
         pizzaService.create(pizza)
     }
 
