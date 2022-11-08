@@ -1,6 +1,8 @@
 package de.iteratec.solution.pizza
 
+import org.springframework.core.io.ClassPathResource
 import org.springframework.stereotype.Service
+import java.lang.RuntimeException
 
 @Service
 class PizzaService(
@@ -14,4 +16,20 @@ class PizzaService(
         println("***   created on ${menuProps.createdOn}")
         pizzaRepository.findAll().forEach { println(" * ${it.name} (${it.price} €)") }
     }
+
+    fun getAll(): List<Pizza> = pizzaRepository.findAll()
+
+    fun getImage(name: String): ByteArray {
+        if (pizzaRepository.findByName(name) == null) {
+            throw IllegalPizzaNameException()
+        }
+
+        return ClassPathResource("pizza.jpeg").inputStream.readAllBytes()
+    }
+
+    fun create(pizza: Pizza) {
+        pizzaRepository.create(pizza)
+    }
 }
+
+class IllegalPizzaNameException: RuntimeException()

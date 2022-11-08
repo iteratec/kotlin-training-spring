@@ -9,13 +9,15 @@ import java.net.URL
 
 interface PizzaRepository {
     fun findAll(): List<Pizza>
+    fun findByName(name: String): Pizza?
+    fun create(pizza: Pizza)
 }
 
 @Repository
 @ConditionalOnProperty(name = ["pizza.repository.type"], havingValue = "in-memory")
 class InMemoryPizzaRepository : PizzaRepository {
 
-    private val pizzaList: List<Pizza> = listOf(
+    private val pizzaList: MutableList<Pizza> = mutableListOf(
         Pizza(name = "Capricciosa", price = 12),
         Pizza(name = "Calzone", price = 8),
         Pizza(name = "Regina", price = 10),
@@ -23,6 +25,12 @@ class InMemoryPizzaRepository : PizzaRepository {
     )
 
     override fun findAll(): List<Pizza> = pizzaList
+
+    override fun findByName(name: String): Pizza? = pizzaList.find { it.name == name }
+
+    override fun create(pizza: Pizza) {
+        pizzaList.add(pizza)
+    }
 }
 
 @Repository
@@ -30,7 +38,15 @@ class InMemoryPizzaRepository : PizzaRepository {
 @ConditionalOnProperty(name = ["pizza.repository.type"], havingValue = "json")
 class JsonPizzaRepository(objectMapper: ObjectMapper) : PizzaRepository {
 
-    private val pizzaList: List<Pizza> = objectMapper.readValue(URL("classpath:/pizza-list.json"))
+    private val pizzaList: MutableList<Pizza> = mutableListOf<Pizza>().apply {
+        addAll(objectMapper.readValue(URL("classpath:/pizza-list.json")))
+    }
 
     override fun findAll(): List<Pizza> = pizzaList
+
+    override fun findByName(name: String): Pizza? = pizzaList.find { it.name == name }
+
+    override fun create(pizza: Pizza) {
+        pizzaList.add(pizza)
+    }
 }
