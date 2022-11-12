@@ -69,6 +69,13 @@ server or database (whatever matches first).
 
 Configuration of `AuthenticationProviders` varies strongly, depending on the authentication mechanism.
 
+One of the commonly used authentication providers is `DaoAuthenticationProvider` which uses an abstraction
+of `UserDetailsService` to fetch relevant user data like username or password hash. By using an
+appropriate implementation of `UserDetailsService` you can easily authenticate against a database,
+in-memory repository or a web service. Spring provides two relevant `UserDetailsService` implementations:
+* `JdbcUserDetailsManager` - allows to access users stored in a database table
+* `CachingUserDetailsService` - provides caching and delegates to another service
+ 
 ```kotlin
 @Bean
 fun securityFilterChain(http: HttpSecurity, authenticationProvider: AuthenticationProvider): SecurityFilterChain {
@@ -93,6 +100,25 @@ fun daoAuthenticationProvider(): AuthenticationProvider {
         setPasswordEncoder(passwordEncoder)
         setUserDetailsService(userDetailsService)
     }
+}
+```
+
+## Defining authentication entry points
+Authentication entry point is a response delivered when user authentication is required, but no
+authentication data has been received. For instance, when HTTP basic authentication is configured,
+but no "Authorization" header has been passed. You can customize this type of response by implementing
+the AuthenticationEntryPoint interface and setting it in the `exceptionHandling` section.
+
+```kotlin
+@Bean
+fun securityFilterChain(http: HttpSecurity): SecurityFilterChain {
+    http {
+        exceptionHandling {
+            authenticationEntryPoint = HttpStatusEntryPoint(HttpStatus.NOT_FOUND)
+        }
+    }
+
+    return http.build()
 }
 ```
 
@@ -135,7 +161,7 @@ fun printUser(@CurrentSecurityContext context: SecurityContext) {
 }
 ```
 
-## Custom security-check with @PreAuthorize
+## Custom security-checks with @PreAuthorize
 You can include custom authorization checks by annotating a method with `@PreAuthorize`. The method
 takes a Spring expression as parameter. Most notably it can call any bean method, that performs a
 check.
