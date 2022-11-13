@@ -21,7 +21,7 @@ of type `ObjectMapper`. You can use the global method `jacksonObjectMapper()` to
 2. In the pizza repository file add a new repository implementation `JsonPizzaRepository` and mark it
 as @Repository. It should have a dependency on the `ObjectMapper` and return parsed pizza list from the
 file `pizza-list.json`. Use the  following snippet to read the pizzas:
-`objectMapper.readValue(URL("classpath:/pizza-list.json"))`.
+`objectMapper.readValue(ClassPathResource("pizza-list.json").inputStream))`.
 3. Try to start the application, it should report a context configuration error.
 4. Use `@Qualifier` to resolve the unambiguity.
 5. Restart the application and enjoy the pizzas loaded from JSON file.

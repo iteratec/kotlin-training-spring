@@ -4,8 +4,8 @@ import com.fasterxml.jackson.databind.ObjectMapper
 import com.fasterxml.jackson.module.kotlin.readValue
 import org.springframework.beans.factory.annotation.Qualifier
 import org.springframework.boot.autoconfigure.condition.ConditionalOnProperty
+import org.springframework.core.io.ClassPathResource
 import org.springframework.stereotype.Repository
-import java.net.URL
 
 interface PizzaRepository {
     fun findAll(): List<Pizza>
@@ -39,7 +39,7 @@ class InMemoryPizzaRepository : PizzaRepository {
 class JsonPizzaRepository(objectMapper: ObjectMapper) : PizzaRepository {
 
     private val pizzaList: MutableList<Pizza> = mutableListOf<Pizza>().apply {
-        addAll(objectMapper.readValue(URL("classpath:/pizza-list.json")))
+        addAll(objectMapper.readValue(ClassPathResource("pizza-list.json").inputStream))
     }
 
     override fun findAll(): List<Pizza> = pizzaList
