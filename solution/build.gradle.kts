@@ -29,6 +29,7 @@ dependencies {
     runtimeOnly("com.h2database:h2")
     testImplementation("org.springframework.boot:spring-boot-starter-test")
     testImplementation("org.springframework.security:spring-security-test")
+    testImplementation("io.mockk:mockk:1.13.2")
 
     annotationProcessor("org.springframework.boot:spring-boot-configuration-processor")
 }
