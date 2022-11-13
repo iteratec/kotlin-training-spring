@@ -16,6 +16,9 @@ class PizzaEndpoint(private val pizzaService: PizzaService) {
     @GetMapping("/image", produces = [MediaType.IMAGE_JPEG_VALUE])
     fun getImage(@RequestParam(name = "name") name: String): ByteArray = pizzaService.getImage(name)
 
+    @GetMapping("/count")
+    fun count(): Int = pizzaService.count()
+
     @PostMapping
     fun create(@Validated @RequestBody pizza: Pizza) {
         pizzaService.create(pizza)

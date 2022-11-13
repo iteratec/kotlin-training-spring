@@ -16,6 +16,7 @@ class WebSecurityConfig {
             authorizeRequests {
                 authorize(anyRequest, permitAll)
             }
+            csrf { disable() }
         }
 
         return http.build()

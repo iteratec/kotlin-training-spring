@@ -19,11 +19,13 @@ class WebSecurityConfig {
             authorizeRequests {
                 authorize("/pizza/image", authenticated)
                 authorize("/user/**", authenticated)
+                authorize(anyRequest, permitAll)
             }
             exceptionHandling {
                 //authenticationEntryPoint = HttpStatusEntryPoint(HttpStatus.PAYMENT_REQUIRED)
             }
             httpBasic {  }
+            csrf { disable() }
         }
 
         return http.build()

@@ -27,6 +27,8 @@ class PizzaService(
         return ClassPathResource("pizza.jpeg").inputStream.readAllBytes()
     }
 
+    fun count(): Int = pizzaRepository.count()
+
     fun create(pizza: Pizza) {
         pizzaRepository.create(pizza)
     }
