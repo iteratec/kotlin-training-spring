@@ -2,8 +2,8 @@
 1. Secure the `/pizza/image` endpoint, so that only authenticated users may call it. All other endpoints should be
 accessible for anyone. Do it by editing the already existing configuration in `WebSecurityConfig`. Try to call the
 endpoint as unauthenticated user and check the response.
-2. Change the response status for unauthenticated users to 402 Payment Required. You can use the class 
-HttpStatusEntryPoint provided by Spring to archive it.
+2. Change the response status for unauthenticated users to 402 Payment Required. This can be archived by setting a custom `authenticationEntryPoint`. You can use the class 
+HttpStatusEntryPoint provided by Spring to produce the response.
 3. Remove the custom authentication entry point configured in the last point and add HTTP basic authentication instead.
 Spring provides the `httpBasic` method, that allows you to add and configure HTTP basic authentication. Configure an
 instance of `InMemoryUserDetailsManager` as a bean and define a single user. Spring will automatically pick it up
