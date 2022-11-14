@@ -26,6 +26,9 @@ class WebSecurityConfig {
             }
             httpBasic {  }
             csrf { disable() }
+            headers {
+                frameOptions { sameOrigin = true }
+            }
         }
 
         return http.build()

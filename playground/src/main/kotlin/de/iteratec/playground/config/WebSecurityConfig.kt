@@ -17,6 +17,9 @@ class WebSecurityConfig {
                 authorize(anyRequest, permitAll)
             }
             csrf { disable() }
+            headers {
+                frameOptions { sameOrigin = true }
+            }
         }
 
         return http.build()
