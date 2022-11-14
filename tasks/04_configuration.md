@@ -1,7 +1,8 @@
 # Application configuration tasks
 
 ## Using @ConfigurationProperties
-1. Enable configuration property scanning in the application.
+1. Enable configuration property scanning in the application by adding `@ConfigurationPropertiesScan` to the main 
+application class.
 2. In the `pizza` package create a data class `MenuProperties`, which will contain basic meta-data of our pizza menu:
    * Menu's name (as string)
    * Menu's version (as integer)
