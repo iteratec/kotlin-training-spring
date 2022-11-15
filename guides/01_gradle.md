@@ -3,6 +3,12 @@
 * [Gradle Kotlin multiplatform plugin docs](https://kotlinlang.org/docs/multiplatform-dsl-reference.html)
 * [Gradle docs](https://docs.gradle.org/current/userguide/getting_started.html)
 
+## Configuration files
+Gradle configuration consists of the following files:
+* `build.gradle.kts` - one file per module, contains actual build configuration for the project
+* `settings.gradle.kts` - one file per project, contains global Gradle configuration like the list of the modules or
+  common configuration shared by all modules
+
 ## Repository management
 [Gradle documentation](https://docs.gradle.org/current/userguide/declaring_repositories.html)
 
@@ -74,11 +80,8 @@ dependencies {
 dependencyResolutionManagement {
     versionCatalogs {
         create("libs") {
-            version("groovy", "3.0.5")
-            library("groovy-core", "org.codehaus.groovy", "groovy").versionRef("groovy")
-            library("groovy-json", "org.codehaus.groovy", "groovy-json").versionRef("groovy")
-            library("groovy-nio", "org.codehaus.groovy", "groovy-nio").versionRef("groovy")
-            library("commons-lang3", "org.codehaus.groovy:groovy-nio:3.0.5")
+            library("groovy-core", "org.codehaus.groovy:groovy:3.0.5")
+            library("groovy-json", "org.codehaus.groovy:groovy-json:3.0.5")
         }
     }
 }
@@ -86,7 +89,7 @@ dependencyResolutionManagement {
 // build.gradle.kts
 dependencies {
     implementation(libs.groovy.core)
-    implementation(libs.commons.lang3)
+    implementation(libs.groovy.json)
 }
 ```
 
@@ -139,7 +142,7 @@ plugins {
 ```kotlin
 tasks.withType<KotlinCompile> {
     kotlinOptions {
-        freeCompilerArgs = listOf("-Xjsr305=strict")
+        freeCompilerArgs = listOf("-opt-in=kotlinx.serialization.ExperimentalSerializationApi")
         jvmTarget = "11"
     }
 }
