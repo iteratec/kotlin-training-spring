@@ -11,7 +11,7 @@ from the repository.
 1. Implement a new method `getImage(name: String): ByteArray` in  `PizzaService`. The method should fulfill the following specification:
    * If a non-existing pizza name is given, the method should throw an `IllegalPizzaNameException`. Create the exception in the same file as the service. It should inherit from RuntimeException.
    * If a valid pizza name is given, the method should return an image as `ByteArray`. Use `ClassPathResource("pizza.jpeg").inputStream.readAllBytes()` to load the image.
-2. Create a new endpoint `GET /pizza/image?name={pizzaName}`, that will get an image for the specified pizza. Use `@GetMapping` with appropriate path and `@RequestParameter` to bind the name parameter. The endpoint will return
+2. Create a new endpoint `GET /pizza/image?name={pizzaName}`, that will get an image for the specified pizza. Use `@GetMapping` with appropriate path and `@RequestParam` to bind the name parameter. The endpoint will return
    images - use `produces = [MediaType.IMAGE_JPEG_VALUE]` parameter in `@GetMapping` to specify the output content type properly.
 3. Start the application and query the created endpoint with a valid and
 invalid pizza name.
