@@ -7,7 +7,7 @@ application class.
    * Menu's name (as string)
    * Menu's version (as integer)
    * Menu's creation date (as string)
-3. Annotate the class with @ConfigurationProperties and set a valid prefix of your choice (e.g. `pizza.menu`).
+3. Annotate the class with `@ConstructorBinding` and `@ConfigurationProperties` with a valid prefix of your choice (e.g. `pizza.menu`).
 4. Add properties defined by `MenuProperties` to `application.properties`.
 5. Inject `MenuProperties` to `PizzaService` and print menu's meta-data before listing all the pizzas.
 
