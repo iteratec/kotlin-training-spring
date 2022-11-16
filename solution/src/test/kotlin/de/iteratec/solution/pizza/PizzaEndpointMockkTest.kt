@@ -1,20 +1,28 @@
 package de.iteratec.solution.pizza
 
+import io.mockk.every
+import io.mockk.mockk
+import io.mockk.verify
 import org.junit.jupiter.api.Test
-import org.mockito.Mockito.`when`
 import org.springframework.beans.factory.annotation.Autowired
 import org.springframework.boot.test.autoconfigure.web.servlet.WebMvcTest
-import org.springframework.boot.test.mock.mockito.MockBean
+import org.springframework.boot.test.context.TestConfiguration
+import org.springframework.context.annotation.Bean
 import org.springframework.test.web.servlet.MockMvc
 import org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get
-import org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath
+import org.springframework.test.web.servlet.result.MockMvcResultMatchers.content
 import org.springframework.test.web.servlet.result.MockMvcResultMatchers.status
 
-
 @WebMvcTest(controllers = [PizzaEndpoint::class])
-class PizzaEndpointTest {
+class PizzaEndpointMockkTest {
 
-    @MockBean
+    @TestConfiguration
+    class TestConfig {
+        @Bean
+        fun pizzaService(): PizzaService = mockk(relaxUnitFun = true)
+    }
+
+    @Autowired
     private lateinit var pizzaService: PizzaService
 
     @Autowired
@@ -22,18 +30,12 @@ class PizzaEndpointTest {
 
     @Test
     fun `should return all pizzas`() {
-        `when`(pizzaService.getAll()).thenReturn(
-            listOf(
-                Pizza(name = "Calzone", price = 1),
-                Pizza(name = "Testone", price = 2),
-            )
-        )
+        every { pizzaService.getAll() } returns listOf(Pizza(name = "Mokka", price = 42))
 
         mvc.perform(get("/pizza"))
             .andExpect(status().is2xxSuccessful)
-            .andExpect(jsonPath("$.[0].name").value("Calzone"))
-            .andExpect(jsonPath("$.[1].name").value("Testone"))
+            .andExpect(content().json("""[{"name": "Mokka", "price": 42}]"""))
 
-        org.mockito.Mockito.verify(pizzaService).getAll()
+        verify { pizzaService.getAll() }
     }
 }
